@@ -1,0 +1,16 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<h2>SAMPLEDTO ${sampleDTO }</h2> <!-- 있는 객체 넘어올때 첫글자가 소문자로 넘어옴 smapleDTO  -->
+<h2>이름: ${sampleDTO.name }</h2>
+<h2>나이: ${sampleDTO.age }</h2>
+<h2>PAGE ${page }</h2>
+<body>
+
+</body>
+</html>
