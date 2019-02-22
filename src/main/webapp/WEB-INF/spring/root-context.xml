@@ -3,9 +3,11 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
 		
@@ -21,15 +23,37 @@
 			<constructor-arg ref="hikariConfig"/>
 		</bean>
 		
+<!-- 		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+			<property name="dataSource" ref="dataSource"/>
+		</bean> -->
+		
+				<!-- transaction :연이어진 작업이 성공적으로 되던지 실패하게되면 아예 롤백 시켜버리던지 -->
+		<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+			<property name="dataSource" ref="dataSource"></property>
+		</bean>
+		<tx:annotation-driven/> <!--annotation 시키는게 위에  transactionManager임. 원래는 명시해야하는데 default 이름으로 transactionManager 사용해서 안써도됨 다른 이름을 쓸 경우는 명시 해줘야함 -->
+		
+		<!--mybatis  -->
 		<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 			<property name="dataSource" ref="dataSource"/>
 		</bean>
+		
+		<!--SqlSession 객체 주입  -->
+		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+			<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
+		</bean>
+		
 		
 		<!--junit test용(값 들어오는지)으로 만든 mapper   -->
 		<mybatis-spring:scan base-package="org.zerock.mapper"/>
 		
 		<!-- servlet-context.xml 에서 이로 옮겨다 적었음 -->
 		<context:component-scan base-package="org.zeorck.sample" />
+		<context:component-scan base-package="org.zerock.service"/>
+		
+		
+
+		
 		
 		
 </beans>
