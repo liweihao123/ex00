@@ -38,13 +38,14 @@
 			<property name="dataSource" ref="dataSource"/>
 		</bean>
 		
-		<!--SqlSession 객체 주입  -->
-		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<!--SqlSession 객체 주입  // 지금은 service에서 바로 mapper로 가기 때문에 이게 필요 없음 -->
+<!-- 		<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
 			<constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"/>
-		</bean>
+		</bean> -->
 		
 		
 		<!--junit test용(값 들어오는지)으로 만든 mapper   -->
+		<!-- 이걸로 인해서 mapper를 바로 찾게 할수 있음 그래서 dao지우고 service에서 바로 연결 가능  -->
 		<mybatis-spring:scan base-package="org.zerock.mapper"/>
 		
 		<!-- servlet-context.xml 에서 이로 옮겨다 적었음 -->
